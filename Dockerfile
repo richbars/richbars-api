@@ -15,4 +15,4 @@ RUN ./mvnw package -DskipTests
 RUN rm -rf ~/.m2/repository
 
 # Aqui você deve substituir pelo nome exato do jar gerado
-CMD ["java", "-jar", "target/app-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "target/app-0.0.1-SNAPSHOT.jar", "--spring.profiles.active=prod"]
