@@ -1,0 +1,21 @@
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration
+      - org.springframework.boot.autoconfigure.mongo.MongoReactiveAutoConfiguration
+  data:
+    mongodb:
+      uri: disabled
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+
+redis:
+  host: turntable.proxy.rlwy.net
+  port: 37863
+  username: default
+  password: ${REDIS_PASSWORD}

@@ -1,0 +1,70 @@
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <!-- JSON Rolling Appender para observabilidade -->
+    <appender name="JSON_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/app-json.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/app-json.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>14</maxHistory>
+        </rollingPolicy>
+
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+
+                <!-- Timestamp -->
+                <timestamp>
+                    <fieldName>timestamp</fieldName>
+                    <pattern>yyyy-MM-dd'T'HH:mm:ss.SSSZ</pattern>
+                </timestamp>
+
+                <!-- Level -->
+                <logLevel>
+                    <fieldName>level</fieldName>
+                </logLevel>
+                <logLevelValue />
+
+                <!-- Logger + Thread -->
+                <loggerName>
+                    <fieldName>logger</fieldName>
+                </loggerName>
+                <threadName />
+
+                <!-- Mensagem -->
+                <message />
+
+                <!-- Dados do local de origem do log -->
+                <callerData>
+                    <classFieldName>class</classFieldName>
+                    <methodFieldName>method</methodFieldName>
+                    <fileFieldName>file</fileFieldName>
+                    <lineFieldName>line</lineFieldName>
+                </callerData>
+
+                <!-- MDC -->
+                <mdc />
+
+                <!-- Stack trace -->
+                <stackTrace>
+                    <fieldName>exception</fieldName>
+                </stackTrace>
+
+                <!-- Nome da aplicação -->
+                <contextName>
+                    <fieldName>application</fieldName>
+                </contextName>
+
+                <!-- Campos personalizados (sem conflito de setters) -->
+                <customFields>{"env":"${ENV:-dev}","service":"richbars-api"}</customFields>
+
+                <!-- Argumentos para logs parametrizados -->
+                <arguments />
+            </providers>
+        </encoder>
+    </appender>
+
+    <!-- Logger padrão -->
+    <root level="INFO">
+        <appender-ref ref="JSON_FILE"/>
+    </root>
+</configuration>
