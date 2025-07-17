@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY ./app /app
 
+RUN chmod +x mvnw
 RUN ./mvnw package -DskipTests
 
 CMD ["java", "-jar", "target/app-*.jar"]
