@@ -6,14 +6,17 @@ spring:
     mongodb:
       host: ${MONGODB_HOST}
       port: ${MONGODB_PORT}
-      username: ${MONGODB_USERNAME}
+      username: mongo
       password: ${MONGODB_PASSWORD}
       authentication-database: admin
+      database: oauth
   redis:
     host: ${REDIS_URL}
     port: ${REDIS_PORT}
     username: default
     password: ${REDIS_PASSWORD}
+  security:
+    hash: ${SECRET_JWT}
 
 management:
   endpoints:
