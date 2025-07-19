@@ -1,70 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
-    <!-- JSON Rolling Appender para observabilidade -->
-    <appender name="JSON_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/app-json.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/app-json.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>14</maxHistory>
-        </rollingPolicy>
+    <!-- Injetar nome da aplicação -->
+    <springProperty scope="context" name="appName" source="spring.application.name"/>
 
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
-
-                <!-- Timestamp -->
+                <!-- Timestamp padrão -->
                 <timestamp>
-                    <fieldName>timestamp</fieldName>
-                    <pattern>yyyy-MM-dd'T'HH:mm:ss.SSSZ</pattern>
+                    <timeZone>America/Sao_Paulo</timeZone>
                 </timestamp>
 
-                <!-- Level -->
-                <logLevel>
-                    <fieldName>level</fieldName>
-                </logLevel>
-                <logLevelValue />
+                <!-- Nível do log -->
+                <logLevel />
 
-                <!-- Logger + Thread -->
-                <loggerName>
-                    <fieldName>logger</fieldName>
-                </loggerName>
-                <threadName />
+                <!-- Nome do logger (classe) -->
+                <loggerName />
 
                 <!-- Mensagem -->
                 <message />
 
-                <!-- Dados do local de origem do log -->
-                <callerData>
-                    <classFieldName>class</classFieldName>
-                    <methodFieldName>method</methodFieldName>
-                    <fileFieldName>file</fileFieldName>
-                    <lineFieldName>line</lineFieldName>
-                </callerData>
+                <!-- Nome da aplicação vindo do Spring -->
+                <mdc>
+                    <includeMdcKeyName>app</includeMdcKeyName>
+                </mdc>
 
-                <!-- MDC -->
-                <mdc />
-
-                <!-- Stack trace -->
-                <stackTrace>
-                    <fieldName>exception</fieldName>
-                </stackTrace>
-
-                <!-- Nome da aplicação -->
-                <contextName>
-                    <fieldName>application</fieldName>
-                </contextName>
-
-                <!-- Campos personalizados (sem conflito de setters) -->
-                <customFields>{"env":"${ENV:-dev}","service":"richbars-api"}</customFields>
-
-                <!-- Argumentos para logs parametrizados -->
-                <arguments />
+                <!-- Custom field para appName -->
+                <customFields>{"app":"${appName}"}</customFields>
             </providers>
         </encoder>
     </appender>
 
-    <!-- Logger padrão -->
     <root level="INFO">
-        <appender-ref ref="JSON_FILE"/>
+        <appender-ref ref="CONSOLE"/>
     </root>
+
 </configuration>

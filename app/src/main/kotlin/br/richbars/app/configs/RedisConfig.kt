@@ -12,11 +12,11 @@ import org.springframework.data.redis.serializer.StringRedisSerializer
 @Configuration
 class RedisConfig {
 
-    @Value("\${redis.host}")
-    private lateinit var redisHost: String
+    @Value("\${redis.url}")
+    private lateinit var redisUrl: String
 
     @Value("\${redis.port}")
-    private var redisPort: Int = 6379
+    private var redisPort: Int = 0
 
     @Value("\${redis.username:}")
     private var redisUsername: String? = null
@@ -26,7 +26,7 @@ class RedisConfig {
 
     @Bean
     fun redisConnectionFactory(): LettuceConnectionFactory {
-        val config = RedisStandaloneConfiguration(redisHost, redisPort)
+        val config = RedisStandaloneConfiguration(redisUrl, redisPort)
         if (!redisUsername.isNullOrBlank()) {
             config.username = redisUsername
         }
