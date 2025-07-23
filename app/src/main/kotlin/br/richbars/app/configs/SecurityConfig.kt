@@ -15,7 +15,7 @@ class SecurityConfig {
         return http
             .csrf { it.disable() }
             .authorizeExchange {
-                it.pathMatchers("/oauth/**").permitAll() // libera rota
+                it.pathMatchers("/oauth/**", "/sofascore/**").permitAll() // libera rota
                 it.anyExchange().authenticated()
             }
             .build()
