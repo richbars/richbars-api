@@ -32,5 +32,7 @@ data class Tournament(
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Team(
-    val name: String
+    val name: String,
+    val id: Long,
+    val flag: String? = null
 )

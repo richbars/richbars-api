@@ -2,7 +2,9 @@ package br.richbars.app.controllers
 
 import DiscordHookConfig
 import DiscordWebhookPayload
+import br.richbars.app.dto.EventOriginal
 import br.richbars.app.dto.SofaScoreResponse
+import br.richbars.app.dto.Team
 import br.richbars.app.repository.RedisRepository
 import br.richbars.app.services.SofaScoreService
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -30,13 +32,36 @@ class SofaScoreController(
         val jsonString = sofaScoreService.getEventsLive()
 
         val eventResponse: SofaScoreResponse = objectMapper.readValue(jsonString)
+        //println(eventResponse)
 
         if (logger.isInfoEnabled) {
-            logger.info("SofaScoreService retornou {} eventos (originais) ativos", eventResponse.events.size)
+            logger.info(
+                "SofaScoreService retornou {} eventos (originais) ativos",
+                eventResponse.events.size
+            )
         }
 
-        return SofaScoreResponse(eventResponse.events.size, eventResponse.events)
+        return SofaScoreResponse(
+            totalGames = eventResponse.events.size,
+            events = eventResponse.events.map { e ->
+                EventOriginal(
+                    id = e.id,
+                    tournament = e.tournament,
+                    homeTeam = Team(
+                        id = e.homeTeam.id,
+                        name = e.homeTeam.name,
+                        flag = "https://img.sofascore.com/api/v1/team/${e.homeTeam.id}/image"
+                    ),
+                    awayTeam = Team(
+                        id = e.awayTeam.id,
+                        name = e.awayTeam.name,
+                        flag = "https://img.sofascore.com/api/v1/team/${e.awayTeam.id}/image"
+                    )
+                )
+            }
+        )
     }
+
 
     @PostMapping("/discord")
     suspend fun postDiscord(@RequestBody request: DiscordWebhookPayload): ResponseEntity<String> {
