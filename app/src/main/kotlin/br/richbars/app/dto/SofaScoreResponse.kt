@@ -10,14 +10,6 @@ data class SofaScoreResponse(
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class Event(
-    val id: Long,
-    val tournament: String,
-    val home: String,
-    val away: String
-)
-
-@JsonIgnoreProperties(ignoreUnknown = true)
 data class EventOriginal(
     val id: Long,
     val tournament: Tournament,
@@ -32,7 +24,7 @@ data class Tournament(
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Team(
-    val name: String,
     val id: Long,
+    val name: String,
     val flag: String? = null
 )
