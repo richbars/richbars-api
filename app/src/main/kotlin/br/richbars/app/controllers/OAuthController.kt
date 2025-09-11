@@ -4,6 +4,7 @@ import br.richbars.app.dto.CreateUserRequest
 import br.richbars.app.model.User
 import br.richbars.app.repository.UserRepository
 import jakarta.validation.Valid
+import org.springframework.context.annotation.Lazy
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -17,7 +18,7 @@ import reactor.core.publisher.Mono
 @RequestMapping("/oauth")
 class OAuthController(
     private val userRepository: UserRepository,
-    private val passwordEncoder: PasswordEncoder
+    @Lazy private val passwordEncoder: PasswordEncoder
 ) {
 
     @PostMapping("/users")
@@ -33,5 +34,4 @@ class OAuthController(
         return userRepository.save(user)
             .map { ResponseEntity.status(HttpStatus.CREATED).build() }
     }
-
 }

@@ -17,6 +17,9 @@ spring:
     password: ${REDIS_PASSWORD}
   security:
     hash: ${SECRET_JWT}
+    user:
+      name: admin
+      password: user123
 
 management:
   endpoints:
